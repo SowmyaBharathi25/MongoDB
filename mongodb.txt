@@ -4,7 +4,7 @@ db.Students_Record.find({$and:[{"scores.0.score":{$gte:40,$lt:60}},{"scores.1.sc
 
 db.Students_Record.aggregate([ { $match: {$and:[{"scores.0.score":{$gte:40,$lt:60}},{"scores.1.score":{$gte:40,$lt:60}},{"scores.2.score":{$gte:40,$lt:60}}]} }, {$out:"average_all" } ])
 
-1) Find the 	student’s name who scored maximum scores in all (exam, quiz and homework)?
+1) Find the student’s name who scored maximum scores in all (exam, quiz and homework)?
 
 db.Students_Record.find({},{"name":1,_id:0}).sort({"scores.0.score":-1}).limit(1)
 
