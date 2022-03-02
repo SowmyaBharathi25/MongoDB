@@ -31,3 +31,14 @@ db.Students_Record.aggregate([{$match:{$and:[{"scores.0.score":{$gte:40}},{"scor
 db.Students_Record.updateMany({$and:[{"scores.0.score":{$lt:40}},{"scores.1.score":{$lt:40}},{"scores.2.score":{$lt:40}}]},{$set:{"Result":"Fail"}})
 
 db.Students_Record.updateMany({$and:[{"scores.0.score":{$gte:40}},{"scores.1.score":{$gte:40}},{"scores.2.score":{$gte:40}}]},{$set:{"Result":"Pass"}})
+
+4) Find the total and average of the exam, quiz and homework and store them in a separate collection.
+
+db.Students_Record.aggregate([{$set:{"Total":{$sum:"$scores.score"}}}])
+
+db.Students_Record.aggregate([{$set:{"Average":{$avg:"$scores.score"}}}])
+
+db.Students_Record.aggregate([{$match:{_id:"$name"}},{$project:{_id:"$name","Total":{$sum:"$scores.score"}}},{$out:"Total_and_Average_Score"}])
+
+db.Students_Record.aggregate([{$match:{_id:"$name"}},{$project:{_id:"$name","Average":{$avg:"$scores.score"}}},{$out:"Total_and_Average_Score"}])
+
