@@ -1,0 +1,23 @@
+db.<SOURCE_COLLECTION>.aggregate([ { $match: {} }, { $out: "<TARGET_COLLECTION>" } ])
+
+db.Students_Record.find({$and:[{"scores.0.score":{$gte:40,$lt:60}},{"scores.1.score":{$gte:40,$lt:60}},{"scores.2.score":{$gte:40,$lt:60}}]})
+
+db.Students_Record.aggregate([ { $match: {$and:[{"scores.0.score":{$gte:40,$lt:60}},{"scores.1.score":{$gte:40,$lt:60}},{"scores.2.score":{$gte:40,$lt:60}}]} }, {$out:"average_all" } ])
+
+db.Students_Record.find({},{"name":1,_id:0}).sort({"scores.0.score":-1}).limit(1)
+
+db.Students_Record.find({},{"name":1,_id:0}).sort({"scores.1.score":-1}).limit(1)
+
+db.Students_Record.find({},{"name":1,_id:0}).sort({"scores.2.score":-1}).limit(1)
+
+db.Students_Record.find({"scores.0.score":{$gte:40,$lt:60}})
+
+db.Students_Record.find({$and:[{"scores.0.score":{$lt:40}},{"scores.1.score":{$lt:40}},{"scores.2.score":{$lt:40}}]})
+
+db.Students_Record.aggregate([{$match:{$and:[{"scores.0.score":{$lt:40}},{"scores.1.score":{$lt:40}},{"scores.2.score":{$lt:40}}]}},{$out:"fail"}])
+
+db.Students_Record.aggregate([{$match:{$and:[{"scores.0.score":{$gte:40}},{"scores.1.score":{$gte:40}},{"scores.2.score":{$gte:40}}]}},{$out:"pass"}])
+
+db.Students_Record.updateMany({$and:[{"scores.0.score":{$lt:40}},{"scores.1.score":{$lt:40}},{"scores.2.score":{$lt:40}}]},{$set:{"Result":"Fail"}})
+
+db.Students_Record.updateMany({$and:[{"scores.0.score":{$gte:40}},{"scores.1.score":{$gte:40}},{"scores.2.score":{$gte:40}}]},{$set:{"Result":"Pass"}})
